@@ -1,0 +1,191 @@
+:root {
+  --bg: #f3f5f0;
+  --panel: #ffffff;
+  --text: #1d2a1f;
+  --muted: #5d6b60;
+  --accent: #2f9e44;
+  --accent-strong: #237a34;
+  --grid: #e6ebe3;
+  --board: #fbfcfa;
+  --food: #e8590c;
+  --border: #d5ddd2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111613;
+    --panel: #1a211c;
+    --text: #e6efe8;
+    --muted: #93a397;
+    --accent: #51cf66;
+    --accent-strong: #40c057;
+    --grid: #1f2822;
+    --board: #151b17;
+    --food: #ff8a3d;
+    --border: #2b362e;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+  color: var(--accent-strong);
+}
+
+.stats { display: flex; gap: 10px; }
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 12px;
+  min-width: 70px;
+  text-align: center;
+}
+
+.stat .label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.stat .value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.board-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--board);
+  touch-action: none;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+  background: color-mix(in srgb, var(--board) 82%, transparent);
+  backdrop-filter: blur(3px);
+}
+
+.overlay.hidden { display: none; }
+
+.overlay h2 { margin: 0; font-size: 1.8rem; }
+.overlay p { margin: 0; color: var(--muted); max-width: 32ch; }
+.overlay .hint { font-size: 0.8rem; }
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+#start-btn {
+  margin-top: 6px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+#start-btn:hover { background: var(--accent-strong); }
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.options label { display: flex; align-items: center; gap: 6px; }
+
+select {
+  font: inherit;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 56px);
+  gap: 6px;
+  justify-content: center;
+}
+
+.dpad button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  touch-action: manipulation;
+}
+
+.dpad button:active { background: var(--grid); }
+
+.dpad [data-dir="up"]    { grid-column: 2; grid-row: 1; }
+.dpad [data-dir="left"]  { grid-column: 1; grid-row: 2; }
+.dpad #pause-btn         { grid-column: 2; grid-row: 2; font-size: 0.9rem; }
+.dpad [data-dir="right"] { grid-column: 3; grid-row: 2; }
+.dpad [data-dir="down"]  { grid-column: 2; grid-row: 3; }
+
+/* Auf Geräten mit Maus/Tastatur wird das Steuerkreuz ausgeblendet */
+@media (hover: hover) and (pointer: fine) {
+  .dpad { display: none; }
+}
